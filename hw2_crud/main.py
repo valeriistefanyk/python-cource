@@ -63,6 +63,13 @@ def update_person(con, person_id):
     con.commit()
 
 
+def delete_person(con, person_id):
+    sql = ''' DELETE FROM person WHERE person_id = ? '''
+    cur = con.cursor()
+    cur.execute(sql, (person_id,))
+    con.commit()
+
+
 def print_table(con):
     sql = ''' SELECT * FROM person;'''
     cur = con.cursor()
@@ -83,6 +90,7 @@ def main():
     with create_connection(database) as con:
         create_table(con)
         create_persons(con)
+        delete_person(con, 7)
         print_table(con)
 
         print("-" * 20)
