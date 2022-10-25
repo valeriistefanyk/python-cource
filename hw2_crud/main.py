@@ -37,9 +37,29 @@ def create_persons(con, entries=10):
         records.append((first_name, last_name, address, job, age))
 
     sql = ''' INSERT INTO person(first_name, last_name, address, job, age) 
-    VALUES (?,?,?,?,?); '''
+            VALUES (?,?,?,?,?); '''
     cur = con.cursor()
     cur.executemany(sql, records)
+    con.commit()
+
+
+def update_person(con, person_id):
+    fake = Faker()
+    first_name = fake.first_name()
+    last_name = fake.last_name()
+    address = fake.address()
+    job = fake.job()
+    age = fake.random_int(14, 100)
+    person = (first_name, last_name, address, job, age, person_id)
+    sql = ''' UPDATE person 
+            SET first_name = ?,
+                last_name = ?,
+                address = ?,
+                job = ?,
+                age = ? 
+            WHERE person_id = ?'''
+    cur = con.cursor()
+    cur.execute(sql, person)
     con.commit()
 
 
@@ -51,12 +71,25 @@ def print_table(con):
         print(p)
 
 
+def print_person(con, person_id):
+    sql = ''' SELECT * FROM person WHERE person_id = ? '''
+    cur = con.cursor()
+    cur.execute(sql, (person_id,))
+    print(cur.fetchone())
+
+
 def main():
     database = "data.db"
     with create_connection(database) as con:
         create_table(con)
         create_persons(con)
         print_table(con)
+
+        print("-" * 20)
+
+        print_person(con, 1)
+        update_person(con, 1)
+        print_person(con, 1)
 
 
 if __name__ == "__main__":
