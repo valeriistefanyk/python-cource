@@ -25,8 +25,7 @@ def create_table(con):
 
 def main():
     database = "data.db"
-    con = create_connection(database)
-    with con:
+    with create_connection(database) as con:
         create_table(con)
 
 
