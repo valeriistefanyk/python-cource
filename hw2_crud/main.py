@@ -1,4 +1,6 @@
+from dataclasses import replace
 import sqlite3
+from faker import Faker
 
 
 def create_connection(db_path):
@@ -23,6 +25,24 @@ def create_table(con):
     con.execute(sql)
 
 
+def create_persons(con, entries=10):
+    fake = Faker()
+    records = []
+    for _ in range(entries):
+        address = fake.address()
+        last_name = fake.last_name()
+        first_name = fake.first_name()
+        job = fake.job()
+        age = fake.random_int(14, 100)
+        records.append((first_name, last_name, address, job, age))
+
+    sql = ''' INSERT INTO person(first_name, last_name, address, job, age) 
+    VALUES (?,?,?,?,?); '''
+    cur = con.cursor()
+    cur.executemany(sql, records)
+    con.commit()
+
+
 def print_table(con):
     sql = ''' SELECT * FROM person;'''
     cur = con.cursor()
@@ -35,6 +55,7 @@ def main():
     database = "data.db"
     with create_connection(database) as con:
         create_table(con)
+        create_persons(con)
         print_table(con)
 
 
