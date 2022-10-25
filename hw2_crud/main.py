@@ -16,7 +16,7 @@ def create_table(con):
        first_name VARCHAR(128) NOT NULL,
        last_name VARCHAR(128) NOT NULL,
        address VARCHAR(1024),
-       jog VARCHAR(128),
+       job VARCHAR(128),
        age INTEGER
     )
     '''
