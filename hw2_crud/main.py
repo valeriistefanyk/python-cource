@@ -1,4 +1,3 @@
-from dataclasses import replace
 import sqlite3
 from faker import Faker
 
