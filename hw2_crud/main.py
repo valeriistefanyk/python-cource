@@ -23,10 +23,19 @@ def create_table(con):
     con.execute(sql)
 
 
+def print_table(con):
+    sql = ''' SELECT * FROM person;'''
+    cur = con.cursor()
+    persons = cur.execute(sql)
+    for p in persons:
+        print(p)
+
+
 def main():
     database = "data.db"
     with create_connection(database) as con:
         create_table(con)
+        print_table(con)
 
 
 if __name__ == "__main__":
