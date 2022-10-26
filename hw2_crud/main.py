@@ -88,7 +88,7 @@ def main():
     database = "data.db"
     with create_connection(database) as con:
         create_table(con)
-        create_persons(con)
+        create_persons(con, entries=15)
         delete_person(con, 7)
         print_table(con)
 
